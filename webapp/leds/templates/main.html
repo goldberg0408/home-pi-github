@@ -1,0 +1,17 @@
+<html>
+<head>
+    <title>LED</title>
+</head>
+<body>
+    <h1> LED </h1>
+
+
+    <p>
+        {% if leds[24].state==true %}
+            is currently on (<a href="/{{24}}/off"> turn off </a>)
+        {% else %}
+            is currently off(<a href ="/{{24}}/on"> turn on </a>)
+        {% endif %}
+    </p>
+</body>
+</html>
