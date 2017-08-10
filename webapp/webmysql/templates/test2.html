@@ -1,0 +1,31 @@
+
+<html>
+
+</html>
+</head>
+	<title></title>
+</head>
+<body>
+<table border>
+<tr>
+	<th>empno</th><!-- u th는 글자를 진하게 하는 것 -->
+	<th>ename</th>
+	<th>job</th>
+	<th>mgr</th>
+	<th>hiredatd</th>
+	<th>sal</th>
+	<th>comm</th>
+	<th>deptno</th>
+
+</tr>
+{% for row in data %}<!--u data는 mysql_2.py파일의 딕셔너리 이름,가로행을 출력 -->
+<tr>
+	{% for col in row %}<!-- 세로를 출력 -->
+		<td>{{col}}</td>
+	{% endfor %}
+</tr>	
+{% endfor %}
+
+</table>
+</body>
+</html>

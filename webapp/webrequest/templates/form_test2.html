@@ -1,0 +1,22 @@
+<html>
+<body>
+<table border>
+<tr>
+	<th>empno</th>
+	<th>ename</th>
+	<th>job</th>
+	<th>mgr</th>
+	<th>hiredate</th>
+	<th>sal</th>
+	<th>comm</th>
+	<th>deptno<th>
+</tr>
+{% for row in data %}
+<tr>
+	{% for col in row %}
+		<td>{{col}}</td>
+	{% endfor %}
+</tr>
+{% endfor %}	
+</body>
+</html>

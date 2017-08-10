@@ -1,0 +1,28 @@
+<html>
+
+<head>
+	<title></title>
+<script type ="text/javascript">
+	function fn(){
+		mode = document.frm.mode.value;
+		onoff = document.frm.onoff.value;
+		location.href ="http://192.168.1.163:8888/" + mode + "/"+onoff
+	}
+</script>
+</head>
+
+	<body>
+		<form name="frm">
+		mode : <select name ="mode">
+			<option value = "LED" selected>LED</option>
+			<option value = "MOTOR">motor</option>
+			</select>&nbsp; &nbsp;
+		onoff : <select name ="onoff">
+			 <option value = "ON" selected>ON</option>
+			 <option value = "OFF">OFF</option>
+			 </select> &nbsp; &nbsp;
+		<input type ="button" value = "클릭" onclick = "fn()">
+		</form>
+	</body>
+
+</html>

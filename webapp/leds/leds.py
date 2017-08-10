@@ -7,7 +7,8 @@ app = Flask(__name__)
 GPIO.setmode(GPIO.BCM)
 
 leds = {
-    24 : {'name':'LED','state':GPIO.LOW}
+    24 : {'name':'LED','state':GPIO.LOW},
+    3  : {'name':'LED','state':GPIO.LOW} 
 }
 
 for led in leds :

@@ -1,0 +1,31 @@
+<html>
+
+</html>
+</head>
+	<title></title>
+</head>
+<body>
+<tr>help:insert/empno,ename,job,mgr,hiredate,sal,comm</tr>
+<table border>
+<tr>
+	<th>empno</th>
+	<th>ename</th>
+	<th>job</th>
+	<th>mgr</th>
+	<th>hiredatd</th>
+	<th>sal</th>
+	<th>comm</th>
+	<th>deptno</th>
+
+</tr>
+{% for row in data %}
+<tr>
+	{% for col in row %}
+		<td>{{col}}</td>
+	{% endfor %}
+</tr>
+{% endfor %}
+
+</table>
+</body>
+</html>
