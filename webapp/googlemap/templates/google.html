@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+    <h3>내가 만들어본 구글 맵 미세먼지 현황!!!!!!!</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var uluru = {lat: {{lat}}, lng: {{lng}}};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: {{zoom}},
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrimeZW4fkroT7WFXorZnrjK1fi8CN9jQ&callback=initMap">
+    </script>
+	<tr>현재 위치의 먼지 농도 :{{value}}</tr>
+	<tr>현재 위치의 미세먼지 등급:{{grade}}</tr>
+  </body>
+</html>

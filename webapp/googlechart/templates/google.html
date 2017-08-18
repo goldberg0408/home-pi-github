@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+	
+	 var jasondata=	$.ajax({
+                        url: "/ajax",
+                        dataType:"json",
+                        async:false,
+	
+                        }).responseText;
+	var test = JSON.parse(jasondata);
+
+	
+	var dataArray = [['time','ch_0','ch_1']];
+	var ch_0=test.db_0;
+	var ch_1=test.db_1;
+  		
+	for(var i =0 in ch_0){
+		dataArray.push([i,Number(ch_0[i]),Number(ch_1[i])]);
+	}
+			
+
+		
+
+
+        var data = google.visualization.arrayToDataTable(dataArray);
+
+        var options = {
+          title: '데이터베이스에 있는 값',
+          curveType: 'function',
+          legend: { position: 'top' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+      	
+
+	
+
+	setInterval(drawChart,3000);
+
+
+	
+    
+    </script>
+  </head>
+  <body>
+    <div id="curve_chart" style="width: 900px; height: 500px"></div>
+  
+  </body>
+</html>
