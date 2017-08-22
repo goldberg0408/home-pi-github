@@ -22,7 +22,7 @@
 	var dataArray = [['time','ch_0','ch_1']];
 	var ch_0=test.db_0;
 	var ch_1=test.db_1;
-  		
+	var test =0;  		
 	for(var i =0 in ch_0){
 		dataArray.push([i,Number(ch_0[i]),Number(ch_1[i])]);
 	}
@@ -47,7 +47,7 @@
 
 	
 
-	setInterval(drawChart,3000);
+	setInterval(drawChart,1000);
 
 
 	
@@ -56,6 +56,18 @@
   </head>
   <body>
     <div id="curve_chart" style="width: 900px; height: 500px"></div>
-  
+
+	<button onclick ="delete_1()">delete </button>
+
+	<script>
+	function delete_1(){
+
+	location.href = "http://192.168.1.163:8888/delete";
+
+		}
+	</script>
+     
+
+
   </body>
 </html>

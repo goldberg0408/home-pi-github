@@ -1,0 +1,171 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+         var jasondata= $.ajax({
+                        url: "/ajax",
+                        dataType:"json",
+                        async:false,
+
+                        }).responseText;
+        var test = JSON.parse(jasondata);
+
+
+        var dataArray = [['time','습도','온도']];
+        var ch_0=test.db_1;
+        var ch_1=test.db_0;
+        var test =0;
+        for(var i =0 in ch_0){
+                dataArray.push([i,Number(ch_0[i]),Number(ch_1[i])]);
+        }
+
+
+
+
+
+        var data = google.visualization.arrayToDataTable(dataArray);
+
+        var options = {
+          title:'온도 습도 값 실시간 출력',
+          curveType: 'function',
+          legend: { position: 'top' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+
+
+        setInterval(drawChart,1000);
+
+
+
+
+    </script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart_1);
+
+      function drawChart_1() {
+
+         var jasondata= $.ajax({
+                        url: "/ajax_1",
+                        dataType:"json",
+                        async:false,
+
+                        }).responseText;
+        var test = JSON.parse(jasondata);
+
+
+        var dataArray = [['time','ch_0','ch_1']];
+        var ch_0=test.c_0;
+        var ch_1=test.c_1;
+        var test =0;
+        for(var i =0 in ch_0){
+                dataArray.push([i,Number(ch_0[i]),Number(ch_1[i])]);
+        }
+
+
+
+
+
+        var data = google.visualization.arrayToDataTable(dataArray);
+
+        var options = {
+          title: '초음파 센서 거리 값',
+          curveType: 'function',
+          legend: { position: 'top' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart1'));
+
+        chart.draw(data, options);
+      }
+
+
+        setInterval(drawChart_1,1000);
+  
+
+   
+
+
+    </script>
+
+
+       <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>   
+ 
+
+
+  </head>
+  <body>	
+       <div id="curve_chart" style="float: left; width:50%; height:250px "></div>    
+    
+      <div id="curve_chart1" style="float: left; width: 50%; height: 250px"></div>
+   
+        
+      <button onclick ="delete_1()">delete </button>
+
+        <script>
+        function delete_1(){
+
+        location.href = "http://192.168.1.163:8888/delete";
+
+                }
+        </script>
+
+  <h3>온도(위도)습도(경도)값 초음파 거리 값(확대)에 반응하는 미친 구글 맵</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+
+        var jasondata= $.ajax({
+                        url: "/map",
+                        dataType:"json",
+                        async:false,
+
+                        }).responseText;
+        var test = JSON.parse(jasondata);
+       
+
+        var uluru = {lat: Number(test.lt),lng:Number( test.lg)};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: test.zm,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+
+    setInterval(initMap,5000);
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrimeZW4fkroT7WFXorZnrjK1fi8CN9jQ&&callback=initMap">
+    </script>
+  </body>
+</html>
+      
+
+
+
+  </body>
+</html>
