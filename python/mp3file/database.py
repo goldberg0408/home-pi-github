@@ -29,7 +29,7 @@ def weather():
  hump = weather[0]["humidity"]
 
  #print ("날씨 데이터를 받는 중입니다 잠시만 기다려주세요...")
- text ="오늘 날씨는"+sky+"이고"+"현재온도는"+temp+"도 입니다."+"그리고 최고온도는"+tmax+"도 입니다."
+ text ="오늘 날씨는"+sky+"이고\r\n"+"현재온도는"+temp+"도 입니다.\r\n"+"그리고 최고온도는"+tmax+"도 입니다.\r\n"
  client_id = "h1pO8IUrZsmwiGRqY_dQ"
  client_secret = "fDoPMVSaCA"
  encText = urllib.parse.quote(text)
@@ -64,6 +64,80 @@ def weather():
    os.system("omxplayer sky_006.mp3")
  else :
    os.system("omxpayer sky_004.mp3")
+
+
+def dust():
+
+  params = {"version": "1", "lon":"128.58498400000","lat":"35.124540000000"} #딕셔너리 형식 - 사용하기 편리하다.
+def dust():
+
+  params = {"version": "1", "lon":"128.58498400000","lat":"35.124540000000"} #딕셔너리 형식 - 사용하기 편리하다.
+
+  headers = {"appKey": "b81288c9-41ec-3d16-90bd-a8b4784730a5"}
+
+
+  r = requests.get("http://apis.skplanetx.com/weather/dust", params=params, headers=headers)
+
+  #json 라이브러리 사용 파싱
+  #json -> python 객체로 변환
+  data = json.loads(r.text)
+  weather = data["weather"]["dust"]
+  station = weather[0]["station"]["name"]#측정소 정보와 측정소 명이다
+  dtime =weather[0]["timeObservation"] #관측시간을 나타냄
+  value = weather[0]["pm10"]["value"] #미세먼지의 농도를 나타낸다
+  grade = weather[0]["pm10"]["grade"] #미세먼지의 등급을 나타냄
+
+  text ="오늘 미세먼지 수치는 "+value+"이고, 등급은"+grade+"입니다."
+
+  headers = {"appKey": "b81288c9-41ec-3d16-90bd-a8b4784730a5"}
+
+
+  r = requests.get("http://apis.skplanetx.com/weather/dust", params=params, headers=headers)
+
+  #json 라이브러리 사용 파싱
+  #json -> python 객체로 변환
+  data = json.loads(r.text)
+  weather = data["weather"]["dust"]
+  station = weather[0]["station"]["name"]#측정소 정보와 측정소 명이다
+  dtime =weather[0]["timeObservation"] #관측시간을 나타냄
+  value = weather[0]["pm10"]["value"] #미세먼지의 농도를 나타낸다
+  grade = weather[0]["pm10"]["grade"] #미세먼지의 등급을 나타냄
+
+  text ="오늘 미세먼지 수치는 "+value+"이고, 등급은"+grade+"입니다."
+
+  client_id = "h1pO8IUrZsmwiGRqY_dQ"
+  client_secret = "fDoPMVSaCA"
+  encText = urllib.parse.quote(text)
+  data = "speaker=jinho&speed=2&text=" + encText;
+  url = "https://openapi.naver.com/v1/voice/tts.bin"
+  request = urllib.request.Request(url)
+  request.add_header("X-Naver-Client-Id",client_id)
+  request.add_header("X-Naver-Client-Secret",client_secret)
+  response = urllib.request.urlopen(request, data=data.encode('utf-8'))
+  rescode = response.getcode()
+  if(rescode==200):
+   print("음성합성완료")
+   response_body = response.read()
+
+   with open('dust.mp3', 'wb') as f:
+    f.write(response_body)
+    os.system("omxplayer dust.mp3")
+  else:
+   print("Error Code:" + rescode)
+
+  print (station)
+  print (dtime)
+  print (value)
+  print (grade)
+  grade ='나쁨' 
+  if grade =='좋음':
+   os.system("omxplayer dust_good.mp3")
+  elif grade =='보통':
+   os.system("omxplayer dust_mid.mp3")
+  elif grade == '약간나쁨':
+   os.system("omxplayer dust_bad.mp3")
+  elif grade == '나쁨' or grade =='매우나쁨':
+   os.system("omxplayer dust_bad1.mp3")
 
 
 def server(host,port,data):
@@ -137,7 +211,9 @@ while (1):
   elif rs[1]=='weather':
    print ("오늘 날씨입니다")
    weather()
-
+  elif rs[1]=='dust':
+   print ("오늘 미세 먼지 ")
+   dust()
 
  except:
   print ("짭비스:무슨말인지 모르겠네요")

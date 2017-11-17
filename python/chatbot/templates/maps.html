@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="UTF-8">
+      <title>실시간 교통 정보 상황</title>
+      <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=cC7aNJze1v89XImjfPNc&submodules=geocoder"></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <body>
+    <div id="map" style="width:100%;height:400px;"></div>
+    <script>
+        var jasondata= $.ajax({
+                        url: "/ajax",
+                        dataType:"json",
+                        async:false,
+
+                        }).responseText;
+        var data = JSON.parse(jasondata);
+
+
+        var map = new naver.maps.Map('map', {
+            center: new naver.maps.LatLng(data.lat, data.lon),
+            zoom: 9,
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                style: naver.maps.MapTypeControlStyle.DROPDOWN
+            }
+        });
+        var trafficLayer = new naver.maps.TrafficLayer({
+            interval: 2000 // 2초마다 새로고침
+        });
+        var btn = $('#traffic');
+        naver.maps.Event.addListener(map, 'trafficLayer_changed', function(trafficLayer) {
+            if (trafficLayer) {
+               btn.addClass('control-on');
+              $("#autorefresh").parent().show();
+              $("#autorefresh")[0].checked = true;
+             } else {
+                  btn.removeClass('control-on');
+                   $("#autorefresh").parent().hide();
+             }
+       });
+       trafficLayer.setMap(map);
+       btn.on("click", function(e) {
+        e.preventDefault();
+
+        if (trafficLayer.getMap()) {
+             trafficLayer.setMap(null);
+         } else {
+        trafficLayer.setMap(map);
+         }
+       });
+       $("#autorefresh").on("click", function(e) {
+           var btn = $(this),
+               checked = btn.is(":checked");
+
+           if (checked) {
+               trafficLayer.startAutoRefresh();
+           } else {
+               trafficLayer.endAutoRefresh();
+           }
+       });
+
+      </script>
+  </body>
+</html>
