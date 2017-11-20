@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-#파이썬에서 동작합니다.
-
+#파이썬3에서 동작합니다.
 import os
 from flask import Flask
 from flask import request
@@ -14,7 +13,7 @@ import requests
 import sys
 import urllib.request
 
-import re #특정 문자열 제거
+import re
 
 area_1=" "
 
@@ -37,7 +36,6 @@ def weather(area):
  headers = {"appKey": "b81288c9-41ec-3d16-90bd-a8b4784730a5"}
  r = requests.get("http://apis.skplanetx.com/weather/current/hourly", params=params, headers=headers)
  d = requests.get("http://apis.skplanetx.com/weather/dust", params=params1, headers=headers)
-
  #json 라이브러리 사용 파싱
  #json -> python 객체로 변환
  data = json.loads(r.text)
@@ -59,20 +57,24 @@ def weather(area):
  grade = dust[0]["pm10"]["grade"] #미세먼지의 등급을 나타냄
  #오늘 강수량 데이터
 
- text ="지역기준:"+rs[0]+"\r\n오늘 날씨: "+sky+"\r\n"+"현재 온도: "+temp+"\r\n"+"최고 온도: "+tmax+"\r\n"
+ text ="지역기준:"+station+"\r\n----------\r\n오늘 날씨: "+sky+"\r\n"+"현재 온도: "+temp+"\r\n"+"최고 온도: "+tmax+"\r\n"
  text1 =text+ "미세먼지 수치: "+value +"\r\n "+"미세먼지 등급:"+grade+"\r\n\r\n"
+ text1 =text+"상대습도:"+hump+"\r\n"+"강수량:"+precipitation+"\r\n----------\r\n"
+ if float(precipitation)==0:
+  text1=text1+"현재 기준으로 비가 오지 않네요 ㅎㅎ 외출을 하시는게 좋지 않을까요?\r\n 그리고 \r\n"
+ elif float(precipitation)>0:
+  text1=text1+"밖에 비가 오고 있네요 우산을 꼭 챙겨서 나가세요 \r\n 그리고 \r\n"
  if grade =='보통':
-   message =text1+ "오늘 미세 먼지 등급이 보통이네요 \r\n 나가실때 마스크 끼고 나가세요~!"
-   return message
+  message =text1+ "오늘 미세 먼지 등급이 보통이네요 \r\n 나가실때 마스크 끼고 나가세요~!"
+  return message
  elif grade =='좋음':
-   message =text1+ "오늘은 밖에 나가기 좋은 날씨~! "
-   return message
+  message =text1+ "미세 먼지 등급이 좋음!!! 마스크는 필요없을 것 같네요"
+  return message
  elif grade =='매우나쁨'or grade =='약간나쁨'or grade=='나쁨':
-   message =text1+ "미세먼지가 너무 많네요 외출을 자제하는게 좋지 않을까요??"
-   return message
+  message =text1+ "미세먼지가 너무 많네요 외출을 자제하는게 좋지 않을까요??"
+  return message
  else:
-   return text1
-
+  return text1
 
 
 def dust():
@@ -178,22 +180,27 @@ def Message():
 
     try:
       if content == u"시작하기":
-         return jsonify(jason_data("주인장 블로그 : http://blog.naver.com/goldberg0408 \r\n '도움말'을 입력해서 명령어들을 확인해보세요"))
+         return jsonify(jason_data("주인장 블로그 : http://blog.naver.com/goldberg0408 \r\n -------------------- \r\n '도움말'을 입력해서 명령어들을 확인해보세요\r\n --------------------"))
       elif content == u"도움말":
          return jsonify(jason_data("교통정보 : 차가 막히는지 알 수 있습니다 \r\n 입력 예->교통정보 \r\n\r\n 날씨 : 해당 지역의 온도 날씨 미세먼지 값을 알 수 있습니다 \r\n 입력 예 ->날씨"))
       elif rs[0] =="날씨":
-         print("text")
          text ="해당 명령어 목록 입니다 \r\n"
-         cur.execute("select * from sttall where comm='weather'")
-         rs1 =cur.fetchall()
-         for i in rs1:
-           text = text+i[0]+"\r\n"
+         cur.execute("select * from area") #지역 목록 개수를 파악하기 위한 구문
+         data =cur.fetchall()
+         for i in data:
+          text = text+"-----지역이름:"+i[0]+"----\r\n"
+          query = "select * from sttall where comm='weather' and text1 like '%"+i[0]+"%'"
+          cur.execute(query)
+          data_1=cur.fetchall();
+          for t in data_1:
+           text = text+t[0]+"\r\n"
          text = text+"\r\n위 명령어를 보내면 날씨 정보를 알 수 있습니다"
          return jsonify(jason_data(text))
       elif rs[1]=='weather':
          db.close()
          cur.close()
          try :
+            
             return jsonify(jason_data(weather(rs[2])))
          except :
             return jsonify(jason_data(weather('부산')))
@@ -201,10 +208,17 @@ def Message():
          return jsonify(jason_data(dust()))
       elif rs[1]=='교통':
          text ="해당 명령어 목록 입니다 \r\n\r\n"
-         cur.execute("select * from sttall where comm='traf'")
-         rs1 =cur.fetchall()
-         for i in rs1:
-           text=text+i[0]+"\r\n"
+         cur.execute("select * from area") #지역 목록 개수를 파악하기 위한 구문
+         data =cur.fetchall()
+         for i in data:
+          text = text+"-----지역이름:"+i[0]+"----\r\n"
+          query = "select * from sttall where area='"+i[0]+"'and comm='traf'"
+          cur.execute(query)
+          data_1=cur.fetchall();
+          for t in data_1:
+           text = text+t[0]+"\r\n"
+
+
          text = text + "\r\n 이렇게 한번 쳐보세요 \r\n ex)교통.동서고가"
          return jsonify(jason_data(text))
       elif rs[1]=='traf':

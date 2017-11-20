@@ -4,7 +4,7 @@ import pymysql
 db = pymysql.connect(host="localhost",user="root",passwd="1234",db="stt",charset='utf8')
 cur =db.cursor()
 
-list=cur.execute("select distinct area from sttall where comm='traf'")
+
 
 cur.execute("select * from area")
 data =cur.fetchall()
