@@ -945,3 +945,10 @@ NameError: name 're' is not defined
 110.76.143.236 - - [20/Nov/2017 11:28:05] "POST /message HTTP/1.1" 200 -
 110.76.143.235 - - [20/Nov/2017 11:28:10] "POST /message HTTP/1.1" 200 -
 110.76.143.236 - - [20/Nov/2017 11:28:13] "POST /message HTTP/1.1" 200 -
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 131-718-151
+110.76.143.235 - - [22/Nov/2017 09:47:58] "POST /message HTTP/1.1" 200 -
+110.76.143.234 - - [22/Nov/2017 09:50:40] "POST /message HTTP/1.1" 200 -
+110.76.143.234 - - [22/Nov/2017 09:50:43] "POST /message HTTP/1.1" 200 -

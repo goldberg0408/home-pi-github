@@ -200,7 +200,7 @@ def Message():
          db.close()
          cur.close()
          try :
-            
+
             return jsonify(jason_data(weather(rs[2])))
          except :
             return jsonify(jason_data(weather('부산')))
