@@ -1,14 +1,14 @@
-import threading
+from multiprocessing import Process,Pool
 import serial
 from socket import *
 import time
-
 
 def socket_th():
  HOST='192.168.1.169' #플라스크서버의 ip 주소
  while 1:
   ser = serial.Serial('/dev/ttyUSB0',9600) # 시리얼 통신 포트
-  ser.close() 
+  ser.close()
+ #print ("test")
   c = socket(AF_INET, SOCK_STREAM) # 소켓 객체 생성
   try:
    c.connect((HOST,5002)) #소켓 서버 해당 호스트,포트번호로 연결
@@ -29,18 +29,18 @@ def socket_th():
 
 def thread2():
  while 1:
-  start_time = time.time()
+  start_time =time.time()
   for i in range(10000000):
    pasz=1;
-
+ 
   print ("%s" %(time.time()-start_time))
-  print ("thread 2 end!!")
+  print ("mulitprocessing 2 end!")
 
-t1 = threading.Thread(target=socket_th)
-t2 = threading.Thread(target=thread2)
-
-t2.start()
-#t1.daemon=True
-t1.start()
-
+if __name__ == '__main__':
+ p = Process(target = socket_th)
+ p1= Process(target = thread2)
+ p.start()
+ p1.start()
+ p1.join()
+ p.join()
 
