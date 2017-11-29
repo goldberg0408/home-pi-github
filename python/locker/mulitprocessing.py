@@ -4,7 +4,7 @@ from socket import *
 import time
 
 def socket_th():
- HOST='192.168.1.169' #플라스크서버의 ip 주소
+ HOST='192.168.1.163' #플라스크서버의 ip 주소
  while 1:
   ser = serial.Serial('/dev/ttyUSB0',9600) # 시리얼 통신 포트
   ser.close()
@@ -27,20 +27,8 @@ def socket_th():
   c.close() #소켓 서버 객체 소멸
   del c
 
-def thread2():
- while 1:
-  start_time =time.time()
-  for i in range(10000000):
-   pasz=1;
- 
-  print ("%s" %(time.time()-start_time))
-  print ("mulitprocessing 2 end!")
-
 if __name__ == '__main__':
  p = Process(target = socket_th)
- p1= Process(target = thread2)
  p.start()
- p1.start()
- p1.join()
  p.join()
 
