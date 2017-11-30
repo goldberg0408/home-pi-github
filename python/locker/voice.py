@@ -4,7 +4,7 @@ import urllib.request
 
 client_id = "h1pO8IUrZsmwiGRqY_dQ"
 client_secret = "fDoPMVSaCA"
-encText = urllib.parse.quote("이용해 주셔서 감사합니다.")
+encText = urllib.parse.quote("원하는 사물함을 선택해주세요.")
 data = "speaker=jinho&speed=1&text=" + encText;
 url = "https://openapi.naver.com/v1/voice/tts.bin"
 request = urllib.request.Request(url)
@@ -16,7 +16,7 @@ if(rescode==200):
   print("음성합성완료")
   response_body = response.read()
 
-  with open('thank_you.mp3', 'wb') as f:
+  with open('choice.mp3', 'wb') as f:
    f.write(response_body)
    #os.system("omxplayer wether.mp3")
 else:
