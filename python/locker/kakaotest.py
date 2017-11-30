@@ -86,7 +86,8 @@ def Message():
         conn.close()
         s.close()
         del s #객체 삭제
-        return jsonify(jason_data("이용해 주셔서 감사합니다."))
+        text ="지역:"+rs[2]+"\r\n"+rs[3]+" 고객님 \r\n 이용해 주셔서 감사합니다."
+        return jsonify(jason_data(text))
       except :
         return jsonify(jason_data("다시한번 시도해주세요"))
 
